@@ -1,0 +1,28 @@
+/* player character */
+/* mc stands for main character */
+#mc {
+	position: absolute;
+	bottom: 5%;
+	left: calc( 50% -  38px);
+	height: 78px;
+	width: 40px;
+}
+
+#mc > div {
+	height: 78px;
+	width: 40px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background: transparent url( ../img/mc/mc-right.gif ) no-repeat left bottom;
+}
+
+#mc.right.up > div {  background-image: url( ../img/mc/mc-right-up.gif ); }
+#mc.right.down > div {  background-image: url( ../img/mc/mc-right-down.gif ); }
+
+#mc.left > div {  background-image: url( ../img/mc/mc-left.gif ); }
+#mc.left.up > div {  background-image: url( ../img/mc/mc-left-up.gif ); }
+#mc.left.down > div {  background-image: url( ../img/mc/mc-left-down.gif ); }
+
+#mc.right > div.jump { background-image: url( ../img/mc/mc-right-jump.gif ); }
+#mc.left > div.jump { background-image: url( ../img/mc/mc-left-jump.gif ); }

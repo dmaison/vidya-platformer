@@ -1,0 +1,18 @@
+/* jump */
+.jump { 
+	animation: jump .5s;
+	-webkit-animation: jump .5s;
+	background-color: #0f0;
+}
+
+@-webkit-keyframes jump {
+	0% { bottom: 0; }
+	50% { bottom: 100px; }
+	100% { bottom: 0; }
+}
+
+@keyframes jump {
+	0% { bottom: 0; }
+	50% { bottom: 100px; }
+	100% { bottom: 0; }
+}
