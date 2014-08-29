@@ -56,15 +56,14 @@ Collision.prototype.detect = function(){
 	      		// Hazard
 	      		if( $( this ).hasClass( 'hazard' ) ) {
 	      			++hazardCount;
-	      			that.character.addClass( 'damage' )
-	      			console.error( 'MC is in contact with a hazard!' );
+	      			that.character.addClass( 'damage' );
 	      		}
 	      	}
 		
 		});
 
 		// if mc is not in contact with any object, then its safe to assume he is in mid air
-  		if( !that.state.falling && platformCount == 0 ) {
+  		if( !that.state.falling && platformCount == 0 && !that.character.hasClass( 'jump' ) ) {
   			that.state.falling = true;
   			that.fall();
   		}

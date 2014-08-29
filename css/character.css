@@ -26,11 +26,11 @@
 #mc.left.up > div {  background-image: url( ../img/mc/mc-left-up.gif ); }
 #mc.left.down > div {  background-image: url( ../img/mc/mc-left-down.gif ); }
 
-#mc.right > div.jump,
+#mc.right.jump > div,
 #mc.right.fall > div,
 #mc.fall > div { background-image: url( ../img/mc/mc-right-jump.gif ); }
 
-#mc.left > div.jump,
+#mc.left.jump > div,
 #mc.left.fall > div { background-image: url( ../img/mc/mc-left-jump.gif ); }
 
-#mc.damage > div { background-image: url( ../img/mc/mc-damage.gif ); }
+#mc.damage > div { background-image: url( ../img/mc/mc-damage.gif ) !important; }

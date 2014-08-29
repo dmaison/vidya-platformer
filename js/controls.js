@@ -21,11 +21,11 @@ Controls.prototype.init = function(){
 		switch( control.keyCode ){
 
 			case that.controls.jump :
-				that.action( 'jump' );
+				if( !that.character.hasClass( 'jump' ) && !that.character.hasClass( 'fall' ) ) that.jump();
 				break;
 
 			case that.controls.moveLeft :
-				that.character
+				that.character 
 					.removeClass( 'right down up' )
 					.addClass( 'left moveLeft' )
 					.animate({ left: '-=20px' }, that.controls.speed);
@@ -54,17 +54,16 @@ Controls.prototype.init = function(){
 	});
 
 	$( document ).keyup(function( control ){
-		if(control.keyCode != that.controls.jump) that.character.stop( true, false );
+		if( !that.character.hasClass( 'jump' ) ) that.character.stop( true, false );
 		that.character.removeClass( 'up down moveRight moveLeft' ) ;
 	});
 
 }
 
-Controls.prototype.action = function( controlName ){
+Controls.prototype.jump = function(){
 	this.character
-		.children( 'div' )
-		.addClass( controlName )
-		.one('webkitAnimationEnd oanimationend oAnimationEnd msAnimationEnd animationend', function(){
+		.addClass( 'jump' )
+		.animate({ bottom: '+=100px' }, function(){
 			$( this ).removeClass( 'jump' );
 		});
 }
