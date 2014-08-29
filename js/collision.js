@@ -41,6 +41,26 @@ Collision.prototype.detect = function(){
 	      	// collision
 	      	} else {
 
+	      		if( $( this ).hasClass( 'impassable' ) ){
+
+	      			console.log( 'this nigga\'s impassable' );
+
+	      		}
+
+
+	      		// Platform
+	      		if( $( this ).hasClass( 'platform' ) ) {
+
+	      			// need to check if bottom of MC & top of platform
+	      			// need to change MC Y position if not top of platform
+	      			++platformCount;
+	      			if( that.state.falling ) {
+	      				that.state.falling = false;
+	      				that.character.removeClass( 'fall' );
+	      			}
+	      		} 
+
+
 	      		// Platform
 	      		if( $( this ).hasClass( 'platform' ) ) {
 
