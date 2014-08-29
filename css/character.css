@@ -17,6 +17,9 @@
 	background: transparent url( ../img/mc/mc-right.gif ) no-repeat left bottom;
 }
 
+#mc.down,
+#mc.down > div { height: 38px; }
+
 .show-hitbox #mc > div { border: 1px solid #f00; }
 
 #mc.right.up > div {  background-image: url( ../img/mc/mc-right-up.gif ); }
