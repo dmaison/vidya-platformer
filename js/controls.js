@@ -54,7 +54,7 @@ Controls.prototype.init = function(){
 	});
 
 	$( document ).keyup(function( control ){
-		if( !that.character.hasClass( 'jump' ) ) that.character.stop( true, false );
+		if( !that.character.hasClass( 'jump' ) && !that.character.hasClass( 'fall' ) ) that.character.stop( true, false );
 		that.character.removeClass( 'up down moveRight moveLeft' ) ;
 	});
 
