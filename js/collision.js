@@ -78,7 +78,6 @@ Collision.prototype.detect = function(){
 Collision.prototype.fall = function() {
 	var that = this;
 	if( that.state.falling ) that.character.animate( { bottom: '-=10px' }, that.options.fallSpeed, function(){
-		console.log( 'MC is falling.' );
 		that.fall();
 	}).addClass( 'fall' );
 

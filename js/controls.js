@@ -8,8 +8,9 @@ function Controls( character ) {
 							crouch 		: 40,
 							climb 		: 38
 						};
-	this.startPosition	= { left: 0, top: 0 }
+
 	this.character.addClass( 'right' );
+
 }
 
 Controls.prototype.init = function(){
@@ -17,6 +18,8 @@ Controls.prototype.init = function(){
 	var that = this;
 
 	$( document ).keydown(function( control ){
+
+		console.log( 'press : ' + control.keyCode );
 
 		switch( control.keyCode ){
 
@@ -53,7 +56,10 @@ Controls.prototype.init = function(){
 
 	});
 
+	//use recursive functions, do not rely on key press
 	$( document ).keyup(function( control ){
+
+		console.log( 'release : ' + control.keyCode );
 		if( !that.character.hasClass( 'jump' ) && !that.character.hasClass( 'fall' ) ) that.character.stop( true, false );
 		that.character.removeClass( 'up down moveRight moveLeft' ) ;
 	});
@@ -63,6 +69,15 @@ Controls.prototype.init = function(){
 Controls.prototype.jump = function(){
 	this.character
 		.addClass( 'jump' )
+		.animate({ bottom: '+=100px' }, function(){
+			$( this ).removeClass( 'jump' );
+		});
+}
+
+//this should solve the jumpiness issue
+Controls.prototype.move = function( direction ){
+	this.character
+		.addClass( direction )
 		.animate({ bottom: '+=100px' }, function(){
 			$( this ).removeClass( 'jump' );
 		});
