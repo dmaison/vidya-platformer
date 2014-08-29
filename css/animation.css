@@ -16,6 +16,37 @@
 	100% { opacity: 1; }
 }
 
+.moveLeft > div { 
+	animation: moveLeft .2s infinite;
+	-webkit-animation: moveLeft .2s infinite;
+}
+
+@-webkit-keyframes moveLeft {
+	0% { background-image: url( ../img/mc/mc-left-moveLeft-1.gif ); }
+	50% { background-image: url( ../img/mc/mc-left-moveLeft-2.gif ); }
+}
+
+@keyframes moveLeft {
+	0% { background-image: url( ../img/mc/mc-left-moveLeft-1.gif ); }
+	50% { background-image: url( ../img/mc/mc-left-moveLeft-2.gif ); }
+}
+
+.moveRight > div { 
+	animation: moveRight .2s infinite;
+	-webkit-animation: moveRight .2s infinite;
+}
+
+@-webkit-keyframes moveRight {
+	0% { background-image: url( ../img/mc/mc-left-moveRight-1.gif ); }
+	50% { background-image: url( ../img/mc/mc-left-moveRight-2.gif ); }
+}
+
+@keyframes moveRight {
+	0% { background-image: url( ../img/mc/mc-left-moveRight-1.gif ); }
+	50% { background-image: url( ../img/mc/mc-left-moveRight-2.gif ); }
+}
+
+
 /* enemy patterns */
 #test.enemy.pattern1 {
 	position: absolute;
