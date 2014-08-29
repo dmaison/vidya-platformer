@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Collision Test</title>
+	<script src="../js/lib/jquery-2.1.1.min.js"></script>
+	<script src="../js/collision.js"></script>
+	<script>
+		$( document ).ready( function(){
+			new Collision({ character: $( '#mc' ), objects: $( '.object' ) }).detect();
+		});
+	</script>
+	<link rel="stylesheet" type="text/css" href="../css/application.css">
+	<style>
+		#mc { bottom: 530px; }
+	</style>
+
+</head>
+<body>
+
+		<pre>
+
+			The character in mid-air receives the "fall" class. The character should stop when he comes in contact with an object that has the class "platform" and lose, he will, the "fall" class. 
+			<strong><em>SOMETIMES</em></strong> the character falls half-way through the ground. This is a timing issue, and it cuts to the end of the animation instead of stopping. Needs a solution.
+		</pre>
+
+	<div id="play-area">
+
+		<div id="mc"><div></div></div>
+
+		<div id="ground" class="object platform"><div></div></div>
+
+	</div>
+
+</body>
+</html>

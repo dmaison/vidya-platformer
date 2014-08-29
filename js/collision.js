@@ -1,40 +1,86 @@
 function Collision( environment ) {
 	this.character	= environment.character;
-	this.ground 	= environment.ground;
 	this.objects 	= environment.objects;
+	this.options	= { fallSpeed : 30 };
+	this.state		= { falling: false }
 }
 
 Collision.prototype.detect = function(){
 
 	var that 		= this;
 
+	// check positions every 100ms
 	setInterval(function(){
 
-		var x2 = that.character.offset().left;
-      	var y2 = that.character.offset().top;
-      	var h2 = that.character.outerHeight(true);
-      	var w2 = that.character.outerWidth(true);
-     	var b2 = y2 + h2;
-      	var r2 = x2 + w2;
+		// character poitioning and coords
+		var characterX 			= that.character.offset().left;
+      	var characterY 			= that.character.offset().top;
+      	var characterHeight 	= that.character.outerHeight(true);
+      	var characterWidth 		= that.character.outerWidth(true);
+     	var characterDepth 		= characterY + characterHeight;
+      	var characterParameter 	= characterX + characterWidth;
+      	var platformCount		= 0; // # of platforms where contact has been made
+      	var hazardCount			= 0; // # 0f hazards where contact has been made
 
 		that.objects.each(function(){
-			
-	      var x1 = $( this ).children('div').offset().left;
-	      var y1 = $( this ).children('div').offset().top;
-	      var h1 = $( this ).children('div').outerHeight(true);
-	      var w1 = $( this ).children('div').outerWidth(true);
-	      var b1 = y1 + h1;
-	      var r1 = x1 + w1;
 
-	      if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) {
-	      	console.log( 'Waiting for collision...' );
-	      } else {
-	      	console.error( 'Collision!!' )
-	      }
+			// object positioning and coords
+		    var x = $( this ).children('div').offset().left;
+		    var y = $( this ).children('div').offset().top;
+		    var h = $( this ).children('div').outerHeight(true);
+		    var w = $( this ).children('div').outerWidth(true);
+		    var d = y + h;
+		    var p = x + w;
+		    
+
+		    // no collision
+	      	if (d < characterY || y > characterDepth || p < characterX || x > characterParameter) {
+	      		
+	      		
+
+	      	// collision
+	      	} else {
+
+	      		// Platform
+	      		if( $( this ).hasClass( 'platform' ) ) {
+
+	      			// need to check if bottom of MC & top of platform
+	      			// need to change MC Y position if not top of platform
+	      			++platformCount;
+	      			if( that.state.falling ) {
+	      				that.state.falling = false;
+	      				that.character.stop( true, true ).removeClass( 'fall' );
+	      			}
+	      		} 
+
+	      		// Hazard
+	      		if( $( this ).hasClass( 'hazard' ) ) {
+	      			++hazardCount;
+	      			that.character.addClass( 'damage' )
+	      			console.error( 'MC is in contact with a hazard!' );
+	      		}
+	      	}
 		
 		});
-		
 
-	}, 100);
+		// if mc is not in contact with any object, then its safe to assume he is in mid air
+  		if( !that.state.falling && platformCount == 0 ) {
+  			that.state.falling = true;
+  			that.fall();
+  		}
+
+  		if( hazardCount == 0 ) that.character.removeClass( 'damage' );
+
+
+	}, 10);
 	
+}
+
+Collision.prototype.fall = function() {
+	var that = this;
+	if( that.state.falling ) that.character.animate( { bottom: '-=10px' }, that.options.fallSpeed, function(){
+		console.log( 'MC is falling.' );
+		that.fall();
+	}).addClass( 'fall' );
+
 }

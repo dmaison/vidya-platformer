@@ -7,23 +7,26 @@
 	<script src="../js/collision.js"></script>
 	<script>
 		$( document ).ready( function(){
-			new Collision({ character: $( '#mc' ), ground: $( '#ground' ), objects: $( '.object' ) }).detect();
+			new Collision({ character: $( '#mc' ), objects: $( '.object' ) }).detect();
 		});
 	</script>
 	<link rel="stylesheet" type="text/css" href="../css/application.css">
 
 </head>
-<body class="show-hitbox">
+<body>
+
+	<pre>
+		
+		If the character comes in contact with an object that has the class "hazard", it applies the "damage" class as long as they are in contact.
+	</pre>
 
 	<div id="play-area">
-
-		<p>If the demon square collides with Mario, the console should say something.</p>
 
 		<div id="test" class="enemy hazard object pattern1"><div></div></div>
 
 		<div id="mc"><div></div></div>
 
-		<div id="ground" class="platform"></div>
+		<div id="ground" class="object platform"><div></div></div>
 
 	</div>
 
