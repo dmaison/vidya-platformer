@@ -16,7 +16,7 @@
 	100% { opacity: 1; }
 }
 
-.moveLeft > div { 
+.moveLeft:not( .fall ):not( .jump ) > div { 
 	animation: moveLeft .2s infinite;
 	-webkit-animation: moveLeft .2s infinite;
 }
@@ -31,7 +31,7 @@
 	50% { background-image: url( ../img/mc/mc-left-moveLeft-2.gif ); }
 }
 
-.moveRight > div { 
+.moveRight:not( .fall ):not( .jump ) > div { 
 	animation: moveRight .2s infinite;
 	-webkit-animation: moveRight .2s infinite;
 }
