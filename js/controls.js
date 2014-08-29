@@ -17,8 +17,6 @@ function Controls( character ) {
 						};
 
 	this.character.addClass( 'right' );
-
-
 }
 
 Controls.prototype.init = function(){
@@ -54,25 +52,23 @@ Controls.prototype.init = function(){
 				break;
 
 			case that.controls.crouch :
-				if( !that.controls.state.crouch ) {
-					that.character
-						.stop( true, false )
-						.addClass( 'down' );
-					break;
+				if( !that.controls.state.crouch && !that.character.hasClass( 'jump' ) && !that.character.hasClass( 'fall' ) ) {
+					that.character.addClass( 'down' ).stop( true, true );
+					that.controls.state.crouch = true;
 				}
+				break;
 
 			case that.controls.climb :
-				if( !that.controls.state.climb ) {
-					that.character
-						.stop( true, false )
-						.addClass( 'up' );
-					break;
+				if( !that.controls.state.climb && !that.character.hasClass( 'jump' ) && !that.character.hasClass( 'fall' ) ) {
+					that.character.addClass( 'up' ).stop( true, true );
+					that.controls.state.climb = true;
 				}
+				break;
 		}
 
 	});
 
-	//use recursive functions, do not rely on key press
+	//key release, invert keypress states
 	$( document ).keyup(function( control ){
 
 		switch( control.keyCode ){
@@ -122,7 +118,7 @@ Controls.prototype.move = function( direction ){
 		this.character
 		.addClass( direction.toLowerCase() )
 		.animate({ left: incType + '=10px' }, that.controls.speed, function(){
-			if( that.controls.state[ 'move' + direction ] ) that.move( direction );
+			that.move( direction );
 		});
 	}
 	
