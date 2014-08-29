@@ -49,7 +49,7 @@ Collision.prototype.detect = function(){
 	      			++platformCount;
 	      			if( that.state.falling ) {
 	      				that.state.falling = false;
-	      				that.character.stop( true, true ).removeClass( 'fall' );
+	      				that.character.removeClass( 'fall' );
 	      			}
 	      		} 
 
