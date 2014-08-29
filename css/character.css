@@ -2,7 +2,7 @@
 /* mc stands for main character */
 #mc {
 	position: absolute;
-	bottom: 5%;
+	bottom: 50px;
 	left: calc( 50% -  38px);
 	height: 78px;
 	width: 40px;
@@ -16,6 +16,8 @@
 	left: 0;
 	background: transparent url( ../img/mc/mc-right.gif ) no-repeat left bottom;
 }
+
+.show-hitbox #mc > div { border: 1px solid #f00; }
 
 #mc.right.up > div {  background-image: url( ../img/mc/mc-right-up.gif ); }
 #mc.right.down > div {  background-image: url( ../img/mc/mc-right-down.gif ); }

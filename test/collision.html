@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Collision Test</title>
+	<script src="../js/lib/jquery-2.1.1.min.js"></script>
+	<script src="../js/collision.js"></script>
+	<script>
+		$( document ).ready( function(){
+			new Collision({ character: $( '#mc' ), ground: $( '#ground' ), objects: $( '.object' ) }).detect();
+		});
+	</script>
+	<link rel="stylesheet" type="text/css" href="../css/application.css">
+
+</head>
+<body class="show-hitbox">
+
+	<div id="play-area">
+
+		<p>If the demon square collides with Mario, the console should say something.</p>
+
+		<div id="test" class="enemy hazard object pattern1"><div></div></div>
+
+		<div id="mc"><div></div></div>
+
+		<div id="ground" class="platform"></div>
+
+	</div>
+
+</body>
+</html>

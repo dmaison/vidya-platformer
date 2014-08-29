@@ -1,13 +1,14 @@
 function Controls( character ) {
-	this.character 	= character;
-	this.controls	= {
-						speed: 70,
-						jump: 32,
-						moveLeft: 37,
-						moveRight: 39,
-						crouch: 40,
-						climb: 38
-					};
+	this.character 		= character;
+	this.controls		= {
+							speed 	 	: 70,
+							jump 	 	: 32,
+							moveLeft 	: 37,
+							moveRight 	: 39,
+							crouch 		: 40,
+							climb 		: 38
+						};
+	this.startPosition	= { left: 0, top: 0 }
 	this.character.addClass( 'right' );
 }
 
@@ -26,14 +27,14 @@ Controls.prototype.init = function(){
 			case that.controls.moveLeft :
 				that.character
 					.removeClass( 'right down up' )
-					.addClass( 'left', 'moveLeft' )
+					.addClass( 'left moveLeft' )
 					.animate({ left: '-=20px' }, that.controls.speed);
 				break;
 
 			case that.controls.moveRight :
 				that.character
 					.removeClass( 'left down up' )
-					.addClass( 'right', 'moveRight' )
+					.addClass( 'right moveRight' )
 					.animate({ left: '+=20px' }, that.controls.speed);
 				break;
 
@@ -54,11 +55,10 @@ Controls.prototype.init = function(){
 
 	$( document ).keyup(function( control ){
 		if(control.keyCode != that.controls.jump) that.character.stop( true, false );
-		that.character.removeClass( 'moveLeft moveRight up down' ) ;
+		that.character.removeClass( 'up down moveRight moveLeft' ) ;
 	});
 
 }
-
 
 Controls.prototype.action = function( controlName ){
 	this.character
