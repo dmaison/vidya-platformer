@@ -53,14 +53,14 @@ Controls.prototype.init = function(){
 
 			case that.controls.crouch :
 				if( !that.controls.state.crouch && !that.character.hasClass( 'jump' ) && !that.character.hasClass( 'fall' ) ) {
-					that.character.addClass( 'down' ).stop( true, true );
+					that.character.addClass( 'down' ).stop().removeClass( 'moveLeft moveRight' );
 					that.controls.state.crouch = true;
 				}
 				break;
 
 			case that.controls.climb :
 				if( !that.controls.state.climb && !that.character.hasClass( 'jump' ) && !that.character.hasClass( 'fall' ) ) {
-					that.character.addClass( 'up' ).stop( true, true );
+					that.character.addClass( 'up' ).stop().removeClass( 'moveLeft moveRight' );
 					that.controls.state.climb = true;
 				}
 				break;
@@ -110,9 +110,8 @@ Controls.prototype.jump = function(){
 //move horizontally
 Controls.prototype.move = function( direction ){
 
-	( direction.toLowerCase() === 'left' ) ? incType = '-' : incType = '+';
-
-	var that = this;
+	var incType	= ( direction.toLowerCase() === 'left' ) ?  '-' : '+';
+	var that 	= this;
 
 	if( this.controls.state[ 'move' + direction ] ) {
 		this.character
