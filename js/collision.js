@@ -34,21 +34,31 @@ Collision.prototype.detect = function(){
 		    var objRight 	= objLeft + objWidth;
 		    
 
-		    // no collision
+		    // if no bottom collision, check for side collision
 	      	if (objBottom < characterTop || objTop > characterBottom || objRight < characterLeft || objLeft > characterRight) {
 	      		
+	      		if( ( objLeft + 2 ) < characterRight && ( objRight - 2 ) > characterLeft && ( objTop + 5 ) <= characterBottom) {	      			
+	      			
+	      			var right = false;
+
+	      			if( ( objRight - 2 ) > characterLeft ) {
+	      				right = true;
+	      				that.character.stop().animate( { left: '+=2px' }, 1 );
+	      			}
+
+	      			console.log( right );
+
+	      			if( ( objLeft + 2 ) < characterRight && right == false ) {
+	      				that.character.stop().animate( { left: '-=2px' }, 1 );
+	      			}
+	      		}
 
 
-	      	// collision
+	      	// bottom collision
 	      	} else {
 
+	      		//if()
 
-	      		// Impassable objects
-	      		if( $( this ).hasClass( 'impassable' ) ){
-
-	      			//if( objTop >= characterBottom ) console.log( 'right' );
-
-	      		}
 
 	      		// Platform (check top +5 so if mc is standing below the top, he doesn't stand in mid air)
 	      		if( $( this ).hasClass( 'platform' ) && ( objTop + 5 ) >= characterBottom ) {
@@ -62,6 +72,15 @@ Collision.prototype.detect = function(){
 	      				if( that.character.hasClass( 'moveRight' ) ) that.controls.move( 'Right' ) ;
 	      			}
 	      		} 
+
+	      		// Impassable objects
+	      		if( $( this ).hasClass( 'impassable' ) ){
+
+	      			console.log( '\n objLeft : ' + objLeft + '\n characterRight : ' + characterRight  );
+
+	      			//if( objLeft >= characterBottom ) console.log( 'right' );
+
+	      		}
 
 	      		// Hazard
 	      		if( $( this ).hasClass( 'hazard' ) ) {
