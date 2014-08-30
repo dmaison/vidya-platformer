@@ -8,8 +8,11 @@
 	<script src="../js/collision.js"></script>
 	<script>
 		$( document ).ready( function(){
-			new Controls( $( '#mc' ) ).init();
-			new Collision({ character: $( '#mc' ), objects: $( '.object' ) }).detect();
+			var controls = new Controls( $( '#mc' ) );
+			var collision = new Collision({ character: controls.character, objects: $( '.object' ), 'controls': controls });
+
+			controls.init();
+			collision.detect();
 		});
 	</script>
 	<link rel="stylesheet" type="text/css" href="../css/application.css">
@@ -18,8 +21,7 @@
 <body>
 	<pre>
 
-		Arrow keys move the character left and right, &amp; make him look up and crouch. Space bar makes the character jump. 
-		An issue exists when jumping and moving. Needs fix.
+		Arrow keys move the character left and right, &amp; make him look up and crouch. Space bar makes the character jump.
 	</pre>
 
 	<div id="play-area">

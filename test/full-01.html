@@ -8,8 +8,11 @@
 	<script src="../js/collision.js"></script>
 	<script>
 		$( document ).ready( function(){
-			new Controls( $( '#mc' ) ).init();
-			new Collision({ character: $( '#mc' ), objects: $( '.object' ) }).detect();
+			var controls = new Controls( $( '#mc' ) );
+			var collision = new Collision({ character: controls.character, objects: $( '.object' ), 'controls': controls });
+
+			controls.init();
+			collision.detect();
 		});
 	</script>
 	<link rel="stylesheet" type="text/css" href="../css/application.css">

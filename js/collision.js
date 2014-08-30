@@ -1,8 +1,9 @@
 function Collision( environment ) {
 	this.character	= environment.character;
 	this.objects 	= environment.objects;
+	this.controls	= environment.controls;
 	this.options	= { fallSpeed : 30 };
-	this.state		= { falling: false }
+	this.state		= { falling: false };
 }
 
 Collision.prototype.detect = function(){
@@ -57,21 +58,14 @@ Collision.prototype.detect = function(){
 	      			if( that.state.falling ) {
 	      				that.state.falling = false;
 	      				that.character.removeClass( 'fall' );
+
+
+	      				if( that.character.hasClass( 'moveLeft' ) ) that.controls.move( 'Left' );
+	      				if( that.character.hasClass( 'moveRight' ) ) that.controls.move( 'Right' ) ;
 	      			}
 	      		} 
 
 
-	      		// Platform
-	      		if( $( this ).hasClass( 'platform' ) ) {
-
-	      			// need to check if bottom of MC & top of platform
-	      			// need to change MC Y position if not top of platform
-	      			++platformCount;
-	      			if( that.state.falling ) {
-	      				that.state.falling = false;
-	      				that.character.removeClass( 'fall' );
-	      			}
-	      		} 
 
 	      		// Hazard
 	      		if( $( this ).hasClass( 'hazard' ) ) {
@@ -97,7 +91,13 @@ Collision.prototype.detect = function(){
 
 Collision.prototype.fall = function() {
 	var that = this;
-	if( that.state.falling ) that.character.animate( { bottom: '-=10px' }, that.options.fallSpeed, function(){
+
+	var movement = { bottom: '-=10px' };
+
+	if( that.character.hasClass( 'moveLeft' ) ) movement.left = '-=10px';
+	if( that.character.hasClass( 'moveRight' ) ) movement.left = '+=10px';
+
+	if( that.state.falling ) that.character.animate( movement, that.options.fallSpeed, function(){
 		that.fall();
 	}).addClass( 'fall' );
 

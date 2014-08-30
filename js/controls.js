@@ -100,9 +100,15 @@ Controls.prototype.init = function(){
 
 //move vertically
 Controls.prototype.jump = function(){
+
+	var movement = { bottom: '+=100px' };
+
+	if( this.controls.state.moveLeft ) movement.left = '-=100px';
+	if( this.controls.state.moveRight ) movement.left = '+=100px';
+
 	this.character
 		.addClass( 'jump' )
-		.animate({ bottom: '+=100px' }, function(){
+		.animate( movement, 300,  function(){
 			$( this ).removeClass( 'jump' );
 		});
 }
@@ -110,15 +116,17 @@ Controls.prototype.jump = function(){
 //move horizontally
 Controls.prototype.move = function( direction ){
 
-	var incType	= ( direction.toLowerCase() === 'left' ) ?  '-' : '+';
-	var that 	= this;
+	var incType		= ( direction.toLowerCase() === 'left' ) ?  '-' : '+';
+	var that 		= this;
+	var movement	= { left: incType + '=10px' };
 
-	if( this.controls.state[ 'move' + direction ] ) {
+	if( this.controls.state[ 'move' + direction ] && !that.character.hasClass( 'fall' ) ) {
+		
 		this.character
-		.addClass( direction.toLowerCase() )
-		.animate({ left: incType + '=10px' }, that.controls.speed, function(){
-			that.move( direction );
-		});
-	}
-	
+			.addClass( direction.toLowerCase() )
+			.animate( movement, that.controls.speed, function(){
+				that.move( direction );
+			});	
+		
+	} 
 }
