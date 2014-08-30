@@ -37,7 +37,7 @@ Collision.prototype.detect = function(){
 		    // if no bottom collision, check for side collision
 	      	if (objBottom < characterTop || objTop > characterBottom || objRight < characterLeft || objLeft > characterRight) {
 	      		
-	      		if( ( objLeft + 2 ) < characterRight && ( objRight - 2 ) > characterLeft && ( objTop + 5 ) <= characterBottom) {	      			
+	      		if( $( this ).hasClass( 'impassable' ) && ( objLeft + 2 ) < characterRight && ( objRight - 2 ) > characterLeft && ( objTop + 5 ) <= characterBottom) {	      			
 	      			
 	      			var right = false;
 
