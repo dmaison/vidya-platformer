@@ -3,7 +3,7 @@ function Collision( environment ) {
 	this.character	= this.controls.character;
 	this.objects 	= environment.objects;
 	this.options	= { fallSpeed : 30 };
-	this.state		= { falling: false };
+	this.state		= { falling : false	};
 }
 
 Collision.prototype.detect = function(){
@@ -36,21 +36,15 @@ Collision.prototype.detect = function(){
 
 		    // if no bottom collision, check for side collision
 	      	if (objBottom < characterTop || objTop > characterBottom || objRight < characterLeft || objLeft > characterRight) {
-	      		
-	      		if( $( this ).hasClass( 'impassable' ) && ( objLeft + 2 ) < characterRight && ( objRight - 2 ) > characterLeft && ( objTop + 5 ) <= characterBottom) {	      			
-	      			
-	      			var right = false;
 
-	      			if( ( objRight - 2 ) > characterLeft ) {
-	      				right = true;
-	      				that.character.stop().animate( { left: '+=2px' }, 1 );
-	      			}
+	      		if( $( this ).hasClass( 'impassable' ) && ( objLeft + 2 ) < characterRight && ( objRight - 2 ) > characterLeft && ( objTop + 5 ) <= characterBottom ) {	 
 
-	      			console.log( right );
+      				if( ( objRight - 2 ) > characterLeft ) { 
+      					that.character.stop().animate( { left: '+=2px' }, 1 );
+      				} else {
+      					that.character.stop().animate( { left: '-=2px' }, 1 );
+      				}
 
-	      			if( ( objLeft + 2 ) < characterRight && right == false ) {
-	      				that.character.stop().animate( { left: '-=2px' }, 1 );
-	      			}
 	      		}
 
 
@@ -73,10 +67,8 @@ Collision.prototype.detect = function(){
 	      			}
 	      		} 
 
-	      		// Impassable objects
+	      		// Impassable objects on the bottom
 	      		if( $( this ).hasClass( 'impassable' ) ){
-
-	      			console.log( '\n objLeft : ' + objLeft + '\n characterRight : ' + characterRight  );
 
 	      			//if( objLeft >= characterBottom ) console.log( 'right' );
 
