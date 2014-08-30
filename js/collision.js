@@ -14,51 +14,50 @@ Collision.prototype.detect = function(){
 	setInterval(function(){
 
 		// character poitioning and coords
-		var characterX 			= that.character.offset().left;
-      	var characterY 			= that.character.offset().top;
+		var characterLeft 		= that.character.offset().left;
+      	var characterTop 		= that.character.offset().top;
       	var characterHeight 	= that.character.outerHeight(true);
       	var characterWidth 		= that.character.outerWidth(true);
-     	var characterDepth 		= characterY + characterHeight;
-      	var characterParameter 	= characterX + characterWidth;
+     	var characterBottom 	= characterTop + characterHeight;
+      	var characterRight 		= characterLeft + characterWidth;
       	var platformCount		= 0; // # of platforms where contact has been made
       	var hazardCount			= 0; // # 0f hazards where contact has been made
 
 		that.objects.each(function(){
 
 			// object positioning and coords
-		    var x = $( this ).children('div').offset().left;
-		    var y = $( this ).children('div').offset().top;
-		    var h = $( this ).children('div').outerHeight(true);
-		    var w = $( this ).children('div').outerWidth(true);
-		    var d = y + h;
-		    var p = x + w;
+		    var objLeft 	= $( this ).children('div').offset().left;
+		    var objTop 		= $( this ).children('div').offset().top;
+		    var objHeight	= $( this ).children('div').outerHeight(true);
+		    var objWidth 	= $( this ).children('div').outerWidth(true);
+		    var objBottom 	= objTop + objHeight;
+		    var objRight 	= objLeft + objWidth;
 		    
 
 		    // no collision
-	      	if (d < characterY || y > characterDepth || p < characterX || x > characterParameter) {
+	      	if (objBottom < characterTop || objTop > characterBottom || objRight < characterLeft || objLeft > characterRight) {
 	      		
-	      		
+
 
 	      	// collision
 	      	} else {
 
+
 	      		// Impassable objects
 	      		if( $( this ).hasClass( 'impassable' ) ){
 
-	      			console.log( 'this nigga\'s impassable' );
+	      			//if( objTop >= characterBottom ) console.log( 'right' );
 
 	      		}
 
-	      		// Platform
-	      		if( $( this ).hasClass( 'platform' ) ) {
-
-	      			// need to check if bottom of MC & top of platform
-	      			// need to change MC Y position if not top of platform
+	      		// Platform (check top +5 so if mc is standing below the top, he doesn't stand in mid air)
+	      		if( $( this ).hasClass( 'platform' ) && ( objTop + 5 ) >= characterBottom ) {
 	      			++platformCount;
 	      			if( that.state.falling ) {
 	      				that.state.falling = false;
 	      				that.character.removeClass( 'fall' );
 
+	      				//necessary because it corrects issue w/ not being able to walk after falling
 	      				if( that.character.hasClass( 'moveLeft' ) ) that.controls.move( 'Left' );
 	      				if( that.character.hasClass( 'moveRight' ) ) that.controls.move( 'Right' ) ;
 	      			}
