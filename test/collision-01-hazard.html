@@ -7,7 +7,8 @@
 	<script src="../js/collision.js"></script>
 	<script>
 		$( document ).ready( function(){
-			new Collision({ character: $( '#mc' ), objects: $( '.object' ) }).detect();
+			var controls = new Controls( $( '#mc' ) );
+			new Collision({ controls: controls, objects: $( '.object' ) }).detect();
 		});
 	</script>
 	<link rel="stylesheet" type="text/css" href="../css/application.css">

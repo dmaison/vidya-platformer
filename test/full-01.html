@@ -9,7 +9,7 @@
 	<script>
 		$( document ).ready( function(){
 			var controls = new Controls( $( '#mc' ) );
-			var collision = new Collision({ character: controls.character, objects: $( '.object' ), 'controls': controls });
+			var collision = new Collision({ objects: $( '.object' ), controls: controls });
 
 			controls.init();
 			collision.detect();

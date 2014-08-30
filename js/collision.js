@@ -1,7 +1,7 @@
 function Collision( environment ) {
-	this.character	= environment.character;
-	this.objects 	= environment.objects;
 	this.controls	= environment.controls;
+	this.character	= this.controls.character;
+	this.objects 	= environment.objects;
 	this.options	= { fallSpeed : 30 };
 	this.state		= { falling: false };
 }
@@ -42,12 +42,12 @@ Collision.prototype.detect = function(){
 	      	// collision
 	      	} else {
 
+	      		// Impassable objects
 	      		if( $( this ).hasClass( 'impassable' ) ){
 
 	      			console.log( 'this nigga\'s impassable' );
 
 	      		}
-
 
 	      		// Platform
 	      		if( $( this ).hasClass( 'platform' ) ) {
@@ -59,13 +59,10 @@ Collision.prototype.detect = function(){
 	      				that.state.falling = false;
 	      				that.character.removeClass( 'fall' );
 
-
 	      				if( that.character.hasClass( 'moveLeft' ) ) that.controls.move( 'Left' );
 	      				if( that.character.hasClass( 'moveRight' ) ) that.controls.move( 'Right' ) ;
 	      			}
 	      		} 
-
-
 
 	      		// Hazard
 	      		if( $( this ).hasClass( 'hazard' ) ) {
@@ -84,7 +81,6 @@ Collision.prototype.detect = function(){
 
   		if( hazardCount == 0 ) that.character.removeClass( 'damage' );
 
-
 	}, 10);
 	
 }
@@ -94,8 +90,8 @@ Collision.prototype.fall = function() {
 
 	var movement = { bottom: '-=10px' };
 
-	if( that.character.hasClass( 'moveLeft' ) ) movement.left = '-=10px';
-	if( that.character.hasClass( 'moveRight' ) ) movement.left = '+=10px';
+	if( that.controls.controls.state.moveLeft ) movement.left = '-=10px';
+	if( that.controls.controls.state.moveRight ) movement.left = '+=10px';
 
 	if( that.state.falling ) that.character.animate( movement, that.options.fallSpeed, function(){
 		that.fall();
