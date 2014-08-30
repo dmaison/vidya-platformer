@@ -108,7 +108,7 @@ Controls.prototype.jump = function(){
 
 	this.character
 		.addClass( 'jump' )
-		.animate( movement, 300,  function(){
+		.animate( movement, 300, 'linear', function(){
 			$( this ).removeClass( 'jump' );
 		});
 }
