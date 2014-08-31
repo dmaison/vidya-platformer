@@ -34,45 +34,58 @@ Collision.prototype.detect = function(){
 		    var objRight 	= objLeft + objWidth;
 		    
 
-		    // if no bottom collision, check for side collision
+		    // if no collision, check for side collision
 	      	if (objBottom < characterTop || objTop > characterBottom || objRight < characterLeft || objLeft > characterRight) {
 
-	      		if( $( this ).hasClass( 'impassable' ) && ( objLeft + 2 ) < characterRight && ( objRight - 2 ) > characterLeft && ( objTop + 5 ) <= characterBottom ) {	 
+	      		
 
-      				if( ( objRight - 2 ) > characterLeft && objLeft < characterLeft ) { 
-      					that.character.stop().animate( { left: '+=2px' }, 1 );
-      				} else {
-      					that.character.stop().animate( { left: '-=2px' }, 1 );
-      				}
-
-	      		}
-
-
-	      	// bottom collision
+	      	// collision
 	      	} else {
 
-	      		//if()
+	      		if( $( this ).hasClass( 'impassable' ) ) {
 
+	      			// if character's feet are bellow the top and head is above the bottom
+	      			if( ( objTop + 5 ) < characterBottom &&  ( objBottom - 5 ) > characterTop ) { 
+
+	      				//hit sides
+			      		if( ( objLeft + 2 ) < characterRight && ( objRight - 2 ) > characterLeft ) {	 
+
+			      			//stop passing on the right
+		      				if( ( objRight - 2 ) > characterLeft && objLeft < characterLeft ) { 
+		      					that.character.stop().animate( { left: '+=2px' }, 1 );
+
+		      				//stop passing on the left
+		      				} else {
+		      					that.character.stop().animate( { left: '-=2px' }, 1 );
+		      				}
+
+		      				//let the character fall if they're in mid-flight
+		      				that.character.removeClass( 'jump' );
+
+			      		}
+			      	} else {
+
+			      		// don't left the character jump through the bottom
+			      		if( ( objBottom - 5 ) <= characterTop ) that.character.stop().removeClass( 'jump' );
+
+			      	}
+
+		      	}
 
 	      		// Platform (check top +5 so if mc is standing below the top, he doesn't stand in mid air)
-	      		if( $( this ).hasClass( 'platform' ) && ( objTop + 5 ) >= characterBottom ) {
+	      		if( ( $( this ).hasClass( 'platform' ) || $( this ).hasClass( 'impassable' ) ) && ( objTop + 5 ) >= characterBottom ) {
 	      			++platformCount;
 	      			if( that.state.falling ) {
 	      				that.state.falling = false;
 	      				that.character.removeClass( 'fall' );
+
+	      				if( ( objTop - 2 ) > characterBottom ) that.character.animate({ bottom: ( objTop + 2 ) + 'px' }, 1);
 
 	      				//necessary because it corrects issue w/ not being able to walk after falling
 	      				if( that.character.hasClass( 'moveLeft' ) ) that.controls.move( 'Left' );
 	      				if( that.character.hasClass( 'moveRight' ) ) that.controls.move( 'Right' ) ;
 	      			}
 	      		} 
-
-	      		// Impassable objects on the bottom
-	      		if( $( this ).hasClass( 'impassable' ) ){
-
-	      			//if( objLeft >= characterBottom ) console.log( 'right' );
-
-	      		}
 
 	      		// Hazard
 	      		if( $( this ).hasClass( 'hazard' ) ) {

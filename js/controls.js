@@ -101,12 +101,14 @@ Controls.prototype.init = function(){
 //move vertically
 Controls.prototype.jump = function(){
 
-	var movement = { bottom: '+=100px' };
+	var movement 	= { bottom: '+=100px' };
+	var jumpStart	= this.character.offset().top; + this.character.outerHeight(true);
 
 	if( this.controls.state.moveLeft ) movement.left = '-=100px';
 	if( this.controls.state.moveRight ) movement.left = '+=100px';
 
 	this.character
+		.data( 'jumpStart', jumpStart )
 		.addClass( 'jump' )
 		.animate( movement, 300, 'linear', function(){
 			$( this ).removeClass( 'jump' );

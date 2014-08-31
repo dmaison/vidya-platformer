@@ -11,16 +11,15 @@
 }
 
 #mc > div {
-	height: 71px;
-	width: 40px;
+	height: 100%;
+	width: 100%;
 	position: absolute;
 	bottom: 0;
 	left: 0;
 	background: transparent url( ../img/mc/mc-right.gif ) no-repeat center center;
 }
 
-#mc.down,
-#mc.down > div { height: 38px; }
+#mc.down { height: 38px; }
 
 #mc.right.up > div {  background-image: url( ../img/mc/mc-right-up.gif ); }
 #mc.right.down > div {  background-image: url( ../img/mc/mc-right-down.gif ); }
@@ -32,6 +31,7 @@
 #mc.right.jump > div { background-image: url( ../img/mc/mc-right-jump.gif ) !important; }
 #mc.left.jump > div { background-image: url( ../img/mc/mc-left-jump.gif ) !important; }
 
+#mc.fall { height: 63px; }
 #mc.right.fall > div { background-image: url( ../img/mc/mc-right-fall.gif ) !important; }
 #mc.left.fall > div { background-image: url( ../img/mc/mc-left-fall.gif ) !important; }
 
