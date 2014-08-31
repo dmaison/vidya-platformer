@@ -2,7 +2,7 @@ function Collision( environment ) {
 	this.controls	= environment.controls;
 	this.character	= this.controls.character;
 	this.objects 	= environment.objects;
-	this.options	= { fallSpeed : 30 };
+	this.options	= { fallSpeed : 15 };
 	this.state		= { falling : false	};
 }
 
