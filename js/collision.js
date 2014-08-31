@@ -39,7 +39,7 @@ Collision.prototype.detect = function(){
 
 	      		if( $( this ).hasClass( 'impassable' ) && ( objLeft + 2 ) < characterRight && ( objRight - 2 ) > characterLeft && ( objTop + 5 ) <= characterBottom ) {	 
 
-      				if( ( objRight - 2 ) > characterLeft ) { 
+      				if( ( objRight - 2 ) > characterLeft && objLeft < characterLeft ) { 
       					that.character.stop().animate( { left: '+=2px' }, 1 );
       				} else {
       					that.character.stop().animate( { left: '-=2px' }, 1 );
