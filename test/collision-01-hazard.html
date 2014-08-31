@@ -4,12 +4,17 @@
 	<meta charset="utf-8">
 	<title>Collision Test</title>
 	<script src="../js/lib/jquery-2.1.1.min.js"></script>
-	<script src="../js/collision.js"></script>
+	<script src="../js/movement.js"></script>
 	<script src="../js/controls.js"></script>
+	<script src="../js/collision.js"></script>
 	<script>
 		$( document ).ready( function(){
-			var controls = new Controls( $( '#mc' ) );
-			new Collision({ controls: controls, objects: $( '.object' ) }).detect();
+			new Collision({ 
+				character	: $( '#mc' ), 
+				objects		: $( '.object' ),
+				fallSpeed	: 20,
+				walkSpeed	: 15
+			});
 		});
 	</script>
 	<link rel="stylesheet" type="text/css" href="../css/application.css">

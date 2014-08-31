@@ -1,123 +1,85 @@
-function Collision( environment ) {
-	this.controls	= environment.controls;
-	this.character	= this.controls.character;
-	this.objects 	= environment.objects;
-	this.options	= { fallSpeed : 15 };
-	this.state		= { falling : false	};
+function Collision( obj ) {
+	var that		= this;
+	this.character	= obj.character;
+	this.objects 	= obj.objects;
+	this.controls	= new Controls( obj );	
+	this.movement	= this.controls.movement;
+	this.init();
 }
 
-Collision.prototype.detect = function(){
+Collision.prototype.init = function(){
 
 	var that 		= this;
 
 	// check positions every 100ms
 	setInterval(function(){
 
-		// character poitioning and coords
-		var characterLeft 		= that.character.offset().left;
-      	var characterTop 		= that.character.offset().top;
-      	var characterHeight 	= that.character.outerHeight(true);
-      	var characterWidth 		= that.character.outerWidth(true);
-     	var characterBottom 	= characterTop + characterHeight;
-      	var characterRight 		= characterLeft + characterWidth;
-      	var platformCount		= 0; // # of platforms where contact has been made
-      	var hazardCount			= 0; // # 0f hazards where contact has been made
+		// character positioning and coords
+		var cCoords	= {
+			left 	: that.character.offset().left,
+	      	top 	: that.character.offset().top,
+	      	height 	: that.character.outerHeight( true ),
+	      	width 	: that.character.outerWidth( true )
+		}
+		cCoords.right 	= ( cCoords.left + cCoords.width );
+		cCoords.bottom	= ( cCoords.top + cCoords.height );
+
+		var platformCount		= 0; // # of platforms where contact has been made
+	    var hazardCount			= 0; // # 0f hazards where contact has been made		
 
 		that.objects.each(function(){
 
-			// object positioning and coords
-		    var objLeft 	= $( this ).children('div').offset().left;
-		    var objTop 		= $( this ).children('div').offset().top;
-		    var objHeight	= $( this ).children('div').outerHeight(true);
-		    var objWidth 	= $( this ).children('div').outerWidth(true);
-		    var objBottom 	= objTop + objHeight;
-		    var objRight 	= objLeft + objWidth;
-		    
+			var obj = $( this );
 
-		    // if no collision, check for side collision
-	      	if (objBottom < characterTop || objTop > characterBottom || objRight < characterLeft || objLeft > characterRight) {
+			var oCoords	= {
+				left 	: obj.children('div').offset().left,
+		      	top 	: obj.children('div').offset().top,
+		      	height 	: obj.children('div').outerHeight(true),
+		      	width 	: obj.children('div').outerWidth(true),
+		     	bottom 	: ( this.top + this.height ),
+		      	right 	: ( this.left + this.width )
+			}
+			oCoords.right 	= ( oCoords.left + oCoords.width );
+			oCoords.bottom	= ( oCoords.top + oCoords.height );
 
-	      		
+		    var collided = that.detect({ c: cCoords, o: oCoords });
 
-	      	// collision
-	      	} else {
-
-	      		if( $( this ).hasClass( 'impassable' ) ) {
-
-	      			// if character's feet are bellow the top and head is above the bottom
-	      			if( ( objTop + 5 ) < characterBottom &&  ( objBottom - 5 ) > characterTop ) { 
-
-	      				//hit sides
-			      		if( ( objLeft + 2 ) < characterRight && ( objRight - 2 ) > characterLeft ) {	 
-
-			      			//stop passing on the right
-		      				if( ( objRight - 2 ) > characterLeft && objLeft < characterLeft ) { 
-		      					that.character.stop().animate( { left: '+=2px' }, 1 );
-
-		      				//stop passing on the left
-		      				} else {
-		      					that.character.stop().animate( { left: '-=2px' }, 1 );
-		      				}
-
-		      				//let the character fall if they're in mid-flight
-		      				that.character.removeClass( 'jump' );
-
-			      		}
-			      	} else {
-
-			      		// don't left the character jump through the bottom
-			      		if( ( objBottom - 5 ) <= characterTop ) that.character.stop().removeClass( 'jump' );
-
-			      	}
-
-		      	}
-
-	      		// Platform (check top +5 so if mc is standing below the top, he doesn't stand in mid air)
-	      		if( ( $( this ).hasClass( 'platform' ) || $( this ).hasClass( 'impassable' ) ) && ( objTop + 5 ) >= characterBottom ) {
-	      			++platformCount;
-	      			if( that.state.falling ) {
-	      				that.state.falling = false;
-	      				that.character.removeClass( 'fall' );
-
-	      				if( ( objTop - 2 ) > characterBottom ) that.character.animate({ bottom: ( objTop + 2 ) + 'px' }, 1);
-
-	      				//necessary because it corrects issue w/ not being able to walk after falling
-	      				if( that.character.hasClass( 'moveLeft' ) ) that.controls.move( 'Left' );
-	      				if( that.character.hasClass( 'moveRight' ) ) that.controls.move( 'Right' ) ;
-	      			}
-	      		} 
-
-	      		// Hazard
-	      		if( $( this ).hasClass( 'hazard' ) ) {
-	      			++hazardCount;
-	      			that.character.addClass( 'damage' );
-	      		}
-	      	}
+		    if( obj.prop( 'id' ) != 'ground' ) console.log( collided.left );
 		
 		});
 
 		// if mc is not in contact with any object, then its safe to assume he is in mid air
-  		if( !that.state.falling && platformCount == 0 && !that.character.hasClass( 'jump' ) ) {
-  			that.state.falling = true;
-  			that.fall();
+  		if( !that.movement.state.falling && platformCount == 0 && !that.character.hasClass( 'jump' ) ) {
+  			that.movement.state.falling = true;
+  			that.movement.fall();
   		}
 
   		if( hazardCount == 0 ) that.character.removeClass( 'damage' );
 
-	}, 10);
+	}, 100);
 	
 }
 
-Collision.prototype.fall = function() {
-	var that = this;
+Collision.prototype.detect = function( obj ){
 
-	var movement = { bottom: '-=10px' };
+	//detection relative to character not object
+	var detection = {
+		left	: false,
+		right	: false,
+		top		: false,
+		bottom 	: false,
+		inside	: false
+	}
 
-	if( that.controls.controls.state.moveLeft ) movement.left = '-=10px';
-	if( that.controls.controls.state.moveRight ) movement.left = '+=10px';
+	// the further right, the greater the number
+	if( obj.c.right >= obj.o.left && obj.c.left <= obj.o.left ) detection.right = true;
+	if( obj.c.left <= obj.o.right && obj.c.right >= obj.o.right ) detection.left = true;
 
-	if( that.state.falling ) that.character.animate( movement, that.options.fallSpeed, function(){
-		that.fall();
-	}).addClass( 'fall' );
+	//the further up, the lesser the number
+	if( obj.c.bottom <= obj.o.top && ) detection.top = true;
+	
 
+	
+
+  	return detection;
 }
