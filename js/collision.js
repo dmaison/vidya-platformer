@@ -60,9 +60,12 @@ Collision.prototype.init = function(){
 
 		    }
 
-		});
+		    // character collided with a hazard
+		    if( $( this ).hasClass( 'hazard' ) ) {
+		    	( collided.any )? that.character.addClass( 'damage' ) : that.character.removeClass( 'damage' );
+		    }
 
-  		if( hazardCount == 0 ) that.character.removeClass( 'damage' );
+		});
 
   		//fall
   		if( platformsCollided == 0 ) {
@@ -91,18 +94,20 @@ Collision.prototype.detect = function( obj ){
 						vertical 	: false
 					};
 
+	// is it inside?
+	if( obj.c.left < obj.o.right && obj.c.right > obj.o.left ) detection.horizontal = true;	
+	if( obj.c.top < obj.o.bottom && obj.c.bottom > obj.o.top ) detection.vertical = true;
+	if( detection.horizontal && detection.vertical ) detection.inside = true;
+
 	// the further right, the greater the number
-	if( obj.c.right >= obj.o.left && obj.c.left <= obj.o.left ) detection.right = true;
-	if( obj.c.left <= obj.o.right && obj.c.right >= obj.o.right ) detection.left = true;
+	if( !detection.horizontal && obj.c.right >= obj.o.left && obj.c.left <= obj.o.left ) detection.right = true;
+	if( !detection.horizontal && obj.c.left <= obj.o.right && obj.c.right >= obj.o.right ) detection.left = true;
 	
 	// the further up, the lesser the number
 	if( obj.c.bottom < ( obj.o.top + 5 ) && obj.c.bottom > ( obj.o.top - 5 ) ) detection.bottom = true;
 	//if( obj.c.top <= obj.o.bottom && obj.c.bottom > obj.o.bottom ) detection.top = true;	
 
-	// is it inside?
-	if( obj.c.left < obj.o.right && obj.c.right > obj.o.left ) detection.horizontal = true;	
-	if( obj.c.top < obj.o.bottom && obj.c.bottom > obj.o.top ) detection.vertical = true;
-	if( detection.horizontal && detection.vertical ) detection.inside = true;
+	
 
 	if( detection.right || detection.left || detection.bottom || detection.top || detection.inside ) detection.any = true;
 
