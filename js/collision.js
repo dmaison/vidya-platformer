@@ -5,7 +5,6 @@ function Collision( obj ) {
 	this.controls	= new Controls( obj );	
 	this.movement	= this.controls.movement;
 	this.init();
-	this.test = 0;
 }
 
 // watch & wait for objects to touch
@@ -28,6 +27,7 @@ Collision.prototype.init = function(){
 		cCoords.right 			= ( cCoords.left + cCoords.width );
 		cCoords.bottom			= ( cCoords.top + cCoords.height );
 
+		// sift through the objects
 		that.objects.each(function(){
 
 			// object positioning and coords
@@ -47,23 +47,35 @@ Collision.prototype.init = function(){
 		    var collided = that.detect({ c: cCoords, o: oCoords });
 
 		    // character landed on a platform or impassable object
-		    if( ( $( this ).hasClass( 'platform' ) || $( this ).hasClass( 'impassable' ) ) && collided.horizontal ) {		    	
-		    	if( collided.bottom || collided.inside ) ++platformsCollided;
+		    if(  $( this ).hasClass( 'platform' ) || $( this ).hasClass( 'impassable' )  ) {		    	
+		    	if( collided.horizontal && ( collided.bottom || collided.inside ) ) ++platformsCollided;
 		    }
 
-		    // stop character from walking through object
-		    if( $( this ).hasClass( 'impassable' ) && ( !collided.horizontal && !collided.bottom ) ) {
+		    // stop character from passing through an object horizontally
+		    if( $( this ).hasClass( 'impassable' ) ) {
+		    	if( collided.vertical && !collided.bottom ){
 
-  				if( collided.right ) that.character.stop().animate( { left: '-=5px' }, 1 );
+		    		// from the right
+	  				if( collided.right ) {
 
-  				if( collided.left ) that.character.stop( true, true ).animate( { left: '+=5px' }, 1 );
+	  					console.log( collided.right );
 
+	  					var position = ( oCoords.left - cCoords.width - 2 )
+	  					that.character.stop( true, true ).animate( { left: position + 'px' }, 3 );
+	  					that.movement.state.moveRight = false;
+	  				}
+
+	  				//from the left
+	  				if( collided.left ) { 
+	  					var position = ( oCoords.left + cCoords.width + 2 )
+	  					that.character.animate( { left: position + 'px' }, 1 );
+	  					that.movement.state.moveLeft = false;
+	  				}
+	  			}
 		    }
 
 		    // character collided with a hazard
-		    if( $( this ).hasClass( 'hazard' ) ) {
-		    	( collided.any )? that.character.addClass( 'damage' ) : that.character.removeClass( 'damage' );
-		    }
+		    if( $( this ).hasClass( 'hazard' ) ) ( collided.inside ) ? that.character.addClass( 'damage' ) : that.character.removeClass( 'damage' );
 
 		});
 
@@ -74,8 +86,8 @@ Collision.prototype.init = function(){
   		} else {
   			that.movement.state.falling = false;
   		}
-
-	}, 10);
+  		
+	}, 1);
 	
 }
 
@@ -100,14 +112,12 @@ Collision.prototype.detect = function( obj ){
 	if( detection.horizontal && detection.vertical ) detection.inside = true;
 
 	// the further right, the greater the number
-	if( !detection.horizontal && obj.c.right >= obj.o.left && obj.c.left <= obj.o.left ) detection.right = true;
-	if( !detection.horizontal && obj.c.left <= obj.o.right && obj.c.right >= obj.o.right ) detection.left = true;
+	if( obj.c.right < ( obj.o.left + 5 ) && obj.c.right > ( obj.o.left - 5 ) ) detection.right = true;
+	if( obj.c.left < ( obj.o.right + 5 ) && obj.c.left > ( obj.o.right - 5 ) ) detection.left = true;
 	
 	// the further up, the lesser the number
 	if( obj.c.bottom < ( obj.o.top + 5 ) && obj.c.bottom > ( obj.o.top - 5 ) ) detection.bottom = true;
-	//if( obj.c.top <= obj.o.bottom && obj.c.bottom > obj.o.bottom ) detection.top = true;	
-
-	
+	if( obj.c.top < ( obj.o.bottom + 5 ) && obj.c.bottom > ( obj.o.bottom - 5 ) ) detection.top = true;	
 
 	if( detection.right || detection.left || detection.bottom || detection.top || detection.inside ) detection.any = true;
 
