@@ -2,7 +2,8 @@ function Movement( obj ){
 	this.character 	= obj.character;
 	this.options	= {
 						walkSpeed : obj.walkSpeed,
-						fallSpeed : obj.fallSpeed 
+						fallSpeed : obj.fallSpeed,
+						jumpSpeed : obj.jumpSpeed
 					};
 	this.state 		= {
 						moveLeft	: false,
@@ -19,6 +20,7 @@ Movement.prototype.jump = function(){
 
 	var animation 	= { bottom: '+=100px' };
 	var jumpStart	= this.character.offset().top; + this.character.outerHeight(true);
+	var that 		= this;
 
 	if( this.state.moveLeft ) animation.left = '-=100px';
 	if( this.state.moveRight ) animation.left = '+=100px';
@@ -26,8 +28,9 @@ Movement.prototype.jump = function(){
 	this.character
 		.data( 'jumpStart', jumpStart )
 		.addClass( 'jump' )
-		.animate( animation, 300, 'linear', function(){
+		.animate( animation, that.options.jumpSpeed, 'linear', function(){
 			$( this ).removeClass( 'jump' );
+			that.fall();
 		});
 }
 
@@ -51,15 +54,25 @@ Movement.prototype.walk = function( direction ){
 
 // Move indefinitely down
 Movement.prototype.fall = function() {
-	return;
 	var that 		= this;
 	var animation 	= { bottom: '-=10px' };
 
 	if( that.state.moveLeft ) animation.left = '-=10px';
 	if( that.state.moveRight ) animation.left = '+=10px';
 
-	if( that.state.falling ) that.character.animate( animation, that.options.fallSpeed, function(){
-		that.fall();
-	}).addClass( 'fall' );
+	if( that.state.falling ) {
+		that.character
+			.addClass( 'fall' )
+			.animate( animation, that.options.fallSpeed, function(){
+				that.fall();
+			});
+	} else {
+		this.character
+			.stop( true, true )
+			.removeClass( 'fall' );
+
+		if( this.state.moveLeft ) this.walk( 'Left' );
+		if( this.state.moveRight ) this.walk( 'Right' );
+	}
 
 }
