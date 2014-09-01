@@ -4,7 +4,6 @@ function Collision( obj ) {
 	this.objects 	= obj.objects;
 	this.controls	= new Controls( obj );	
 	this.movement	= this.controls.movement;
-	this.init();
 }
 
 // watch & wait for objects to touch

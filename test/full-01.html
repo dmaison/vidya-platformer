@@ -7,14 +7,16 @@
 	<script src="../js/movement.js"></script>
 	<script src="../js/controls.js"></script>
 	<script src="../js/collision.js"></script>
+	<script src="../js/vidya.js"></script>
 	<script>
 		$( document ).ready( function(){
-			new Collision({ 
+			new Vidya({ 
 				character	: $( '#mc' ), 
 				objects		: $( '.object' ),
-				fallSpeed	: 20,
-				jumpSpeed	: 200,
-				walkSpeed	: 15
+				movement 	: {
+								fallSpeed	: 20,
+								walkSpeed	: 15
+							}
 			});
 		});
 	</script>

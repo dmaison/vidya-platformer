@@ -1,0 +1,20 @@
+{
+	//required
+	'character'	: 'jQuery reference',
+	'objects'	: 'jQuery reference',
+
+	//in milliseconds
+	'movement' 	: {
+						fallSpeed 	: int,
+						jumpSpeed 	: int,
+						walkSpeed 	: int
+					}
+	// key codes
+	'controls' 	: {
+					jump 		: int,
+					crouch 		: int,
+					climb 		: int,
+					moveLeft 	: int,
+					moveRight 	: int
+				}
+}

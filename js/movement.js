@@ -1,9 +1,9 @@
 function Movement( obj ){
 	this.character 	= obj.character;
 	this.options	= {
-						walkSpeed : obj.walkSpeed,
-						fallSpeed : obj.fallSpeed,
-						jumpSpeed : obj.jumpSpeed
+						walkSpeed : obj.movement.walkSpeed || 15,
+						fallSpeed : obj.movement.fallSpeed || 20,
+						jumpSpeed : obj.movement.jumpSpeed || 300
 					};
 	this.state 		= {
 						moveLeft	: false,

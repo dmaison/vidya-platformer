@@ -2,13 +2,12 @@ function Controls( obj ) {
 	this.character 		= obj.character;
 	this.movement		= new Movement( obj );
 	this.controls		= {
-							jump 	 	: 32,
-							moveLeft 	: 37,
-							moveRight 	: 39,
-							crouch 		: 40,
-							climb 		: 38
+							jump 	 	: obj.controls.jump || 32,
+							moveLeft 	: obj.controls.moveLeft || 37,
+							moveRight 	: obj.controls.moveRight || 39,
+							crouch 		: obj.controls.crouch || 40,
+							climb 		: obj.controls.climb || 38
 						};
-	this.init();
 }
 
 Controls.prototype.init = function(){
