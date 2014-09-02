@@ -1,20 +1,21 @@
 {
-	//required
-	'character'	: 'jQuery reference',
-	'objects'	: 'jQuery reference',
+	// required, expects jQuery object: $( 'selector' ) 
+	"character"	: {},
+	"objects"	: {},	
 
-	//in milliseconds
-	'movement' 	: {
-						fallSpeed 	: int,
-						jumpSpeed 	: int,
-						walkSpeed 	: int
-					}
-	// key codes
-	'controls' 	: {
-					jump 		: int,
-					crouch 		: int,
-					climb 		: int,
-					moveLeft 	: int,
-					moveRight 	: int
+	// optional: physics ( expects int value in milliseconds )
+	"movement" 	: {
+					"fallSpeed" 	: 0,	
+					"jumpSpeed" 	: 0,	
+					"walkSpeed" 	: 0 
+				},
+
+	// optional: key reassignment ( expects keycode )
+	"controls" 	: {
+					"jump" 		: 0, 
+					"crouch" 	: 0,
+					"climb" 	: 0,
+					"moveLeft" 	: 0,
+					"moveRight"	: 0
 				}
 }
