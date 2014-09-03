@@ -1,6 +1,6 @@
 vidya-platformer
 ================
-**Use
+**Use**
 
 - Include the js files in the &lt;head&gt; of the document that are located in the ./js directory ( When it gets to a viable state, all the js files will be contained in one file: vidya.js )
 
