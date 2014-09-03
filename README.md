@@ -4,7 +4,7 @@ vidya-platformer
 Vidya is meant to decrease the development time and make it easy to create web-client based 2d platformer games.
 
 Use
-===============
+----------------
 
 1. Include the js files in the &lt;head&gt; of the document that are located in the ./js directory ( When it gets to a viable state, all the js files will be contained in one file: vidya.js )
 
@@ -41,7 +41,7 @@ Use
 </pre>
 
 Objects
-===============
+----------------
 
 An object's interaction with the character is determined by the class that is on the html element
 - **platform** : the character can pass through the bottom and sides, but not the top of the object.
@@ -54,7 +54,7 @@ An object's interaction with the character is determined by the class that is on
 - **climbable** : ( not added yet )
 
 Character State
-===============
+----------------
 
 Classes are added to the element designated as the main character, when it is given commands or comes in contact with certain objects.
 - **left** : the character is facing the left direction.
