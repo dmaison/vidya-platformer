@@ -2,7 +2,7 @@ vidya-platformer
 ================
 *Use
 
-- Include the js files in the <head> of the document that are located in the ./js directory ( When it gets to a viable state, all the js files will be contained in one file: vidya.js )
+- Include the js files in the &lt;head&gt; of the document that are located in the ./js directory ( When it gets to a viable state, all the js files will be contained in one file: vidya.js )
 
 - Created a new instance of vidya after dom loaded:
   $( document ).ready(function(){
