@@ -48,27 +48,49 @@ Collision.prototype.init = function(){
 
 		    // character landed on a platform or impassable object
 		    if(  $( this ).hasClass( 'platform' ) || $( this ).hasClass( 'impassable' )  ) {		    	
-		    	if( collided.horizontal && ( collided.bottom || collided.inside ) ) ++platforms;
+		    	if( collided.horizontal && ( collided.bottom || collided.majority.vertical == 'bottom' ) ) {
+		    		++platforms;
+		    		if( collided.inside ){
+		    			var moveDistance = oCoords.top - cCoords.bottom;
+		    			if( moveDistance > 2 ) that.character.css({ bottom: '-=' + Math.abs( moveDistance )  + 'px' });
+		    			if( moveDistance < 2 ) that.character.css({ bottom: '+=' + Math.abs( moveDistance )  + 'px' });
+		    		}
+		    	}
 		    }
 
 		    // stop character from passing through an object horizontally
 		    if( $( this ).hasClass( 'impassable' ) ) {
+
+		    	//sides
 		    	if( collided.vertical && !collided.bottom ) {
 	  				if( collided.right ) that.controls.disable( 'moveRight' ); // from the right
 	  				if( collided.left ) that.controls.disable( 'moveLeft' ); //from the left
 	  				
 	  				//figure out which side character is closest to and disable it
-	  				if( collided.inside ) console.log( 'inside' );
+	  				if( collided.inside ) {
+	  					console.log( collided.majority.horizontal )
+	  					console.log( 'inside' )
+	  				};
 
 	  				if( collided.right || collided.left || collided.inside ) ++impassable;
+
+	  			}
+
+	  			//bottom
+	  			if( collided.horizontal && !collided.bottom ) {
+	  				if( collided.top || collided.majority.vertical == 'top' ) {	  					
+	  					var moveDistance = Math.abs( oCoords.bottom - cCoords.top);
+	  					that.character
+	  						.stop( true, false )
+	  						.removeClass( 'jump' )
+	  						.animate({ bottom: '-=' +  moveDistance  + 'px' }, 1);
+	  				}
 
 	  			}
 		    }
 
 		    // character collided with a hazard
-		    if( $( this ).hasClass( 'hazard' ) ) {
-		    	if( collided.inside ) ++hazards;
-		    }
+		    if( $( this ).hasClass( 'hazard' ) && collided.inside ) ++hazards;
 
 		});
 
@@ -102,7 +124,11 @@ Collision.prototype.detect = function( obj ){
 						bottom 		: false,
 						inside		: false,
 						horizontal	: false,
-						vertical 	: false
+						vertical 	: false,
+						majority	: {
+										vertical 	: null,
+										horizontal 	: null
+									}
 					};
 
 	// is it inside?
@@ -118,7 +144,21 @@ Collision.prototype.detect = function( obj ){
 	if( obj.c.bottom < ( obj.o.top + 5 ) && obj.c.bottom > ( obj.o.top - 5 ) ) detection.bottom = true;
 	if( obj.c.top < ( obj.o.bottom + 5 ) && obj.c.bottom > ( obj.o.bottom - 5 ) ) detection.top = true;	
 
+	// check if any detection at all
 	if( detection.right || detection.left || detection.bottom || detection.top || detection.inside ) detection.any = true;
+
+	// check the majority inside
+	if( detection.inside ) {
+
+		var vMajority	= Math.abs( obj.c.top - obj.o.top );
+		var hMajority	= Math.abs( obj.c.right - obj.o.right );
+		var vCenter		= ( obj.o.height / 2 );
+		var hCenter		= ( obj.o.width / 2 );
+
+		( vMajority > vCenter ) ? detection.majority.vertical = 'bottom' : detection.majority.vertical = 'top';
+		( hMajority > hCenter ) ? detection.majority.horizontal = 'left' : detection.majority.horizontal = 'right';
+
+	}
 
   	return detection;
 }
