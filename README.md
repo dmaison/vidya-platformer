@@ -44,25 +44,25 @@ Objects
 ================
 
 An object's interaction with the character is determined by the class that is on the html element
-- platform : the character can pass through the bottom and sides, but not the top of the object.
-- impassable : the character cannot pass through the object on any side ( if the character is inside an impassable object they cannot leave it ).
-- hazard : any contact inflicts damage to the character.
-- enemy : contact on the sides and bottom, inflict damage to the character. contact to the top, removes the object from the dom.
-- chest : ( not added yet ) 
-- point : ( not added yet )
-- health : ( not added yet )
-- climbable : ( not added yet )
+- **platform** : the character can pass through the bottom and sides, but not the top of the object.
+- **impassable** : the character cannot pass through the object on any side ( if the character is inside an impassable object they cannot leave it ).
+- **hazard** : any contact inflicts damage to the character.
+- **enemy** : contact on the sides and bottom, inflict damage to the character. contact to the top, removes the object from the dom.
+- **chest** : ( not added yet ) 
+- **point** : ( not added yet )
+- **health** : ( not added yet )
+- **climbable** : ( not added yet )
 
 Character State
 ================
 
 Classes are added to the element designated as the main character, when it is given commands or comes in contact with certain objects.
-- left : the character is facing the left direction.
-- right : the character is facing the right direction.
-- up : the user hits the climb control but is not infront of a climbable object.
-- climbing : the character is climbing.
-- down : the user hits the crouch control.
-- moveLeft : the character is moving left.
-- moveRight : the character is moving right.
-- falling : the character is not in contact with any platform or impassable objects.
-- damage : the character comes in harmful contact with a hazard or enemy object.
+- **left** : the character is facing the left direction.
+- **right** : the character is facing the right direction.
+- **up** : the user hits the climb control but is not infront of a climbable object.
+- **climbing** : the character is climbing.
+- **down** : the user hits the crouch control.
+- **moveLeft** : the character is moving left.
+- **moveRight** : the character is moving right.
+- **falling** : the character is in free fall.
+- **damage** : the character comes in harmful contact with a hazard or enemy object.
