@@ -15,8 +15,9 @@ Collision.prototype.init = function(){
 	setInterval(function(){
 
 		// character positioning and coords
-		var platformsCollided 	= 0; // # of platforms where contact has been made
-	    var hazardCount			= 0; // # 0f hazards where contact has been made		
+		var platforms 			= 0; // # of platforms where contact has been made
+	    var hazards 			= 0; // # 0f hazards where contact has been made
+	    var impassable			= 0;
 		var cCoords				= {
 									left 	: that.character.offset().left,
 							      	top 	: that.character.offset().top,
@@ -47,44 +48,43 @@ Collision.prototype.init = function(){
 
 		    // character landed on a platform or impassable object
 		    if(  $( this ).hasClass( 'platform' ) || $( this ).hasClass( 'impassable' )  ) {		    	
-		    	if( collided.horizontal && ( collided.bottom || collided.inside ) ) ++platformsCollided;
+		    	if( collided.horizontal && ( collided.bottom || collided.inside ) ) ++platforms;
 		    }
 
 		    // stop character from passing through an object horizontally
 		    if( $( this ).hasClass( 'impassable' ) ) {
-		    	if( collided.vertical && !collided.bottom ){
+		    	if( collided.vertical && !collided.bottom ) {
+	  				if( collided.right ) that.controls.disable( 'moveRight' ); // from the right
+	  				if( collided.left ) that.controls.disable( 'moveLeft' ); //from the left
+	  				
+	  				//figure out which side character is closest to and disable it
+	  				if( collided.inside ) console.log( 'inside' );
 
-		    		// from the right
-	  				if( collided.right ) {
+	  				if( collided.right || collided.left || collided.inside ) ++impassable;
 
-	  					console.log( collided.right );
-
-	  					var position = ( oCoords.left - cCoords.width - 2 )
-	  					that.character.stop( true, true ).animate( { left: position + 'px' }, 3 );
-	  					that.movement.state.moveRight = false;
-	  				}
-
-	  				//from the left
-	  				if( collided.left ) { 
-	  					var position = ( oCoords.left + cCoords.width + 2 )
-	  					that.character.animate( { left: position + 'px' }, 1 );
-	  					that.movement.state.moveLeft = false;
-	  				}
 	  			}
 		    }
 
 		    // character collided with a hazard
-		    if( $( this ).hasClass( 'hazard' ) ) ( collided.inside ) ? that.character.addClass( 'damage' ) : that.character.removeClass( 'damage' );
+		    if( $( this ).hasClass( 'hazard' ) ) {
+		    	if( collided.inside ) ++hazards;
+		    }
 
 		});
 
   		//fall
-  		if( platformsCollided == 0 ) {
+  		if( platforms == 0 ) {
   			that.movement.state.falling = true;
   			that.movement.fall();
   		} else {
   			that.movement.state.falling = false;
   		}
+
+  		//damage
+  		( hazards > 0 ) ? that.character.addClass( 'damage' ) : that.character.removeClass( 'damage' );
+
+  		//stop horizontal
+  		if( impassable == 0 && that.controls.disabled.check == true ) that.controls.enable();
   		
 	}, 1);
 	

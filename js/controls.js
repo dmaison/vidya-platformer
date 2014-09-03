@@ -1,6 +1,14 @@
 function Controls( obj ) {
 	this.character 		= obj.character;
 	this.movement		= new Movement( obj );
+	this.disabled		= {
+							check		: false,
+							jump 	 	: false,
+							moveLeft 	: false,
+							moveRight 	: false,
+							crouch 		: false,
+							climb 		: false
+						};
 	this.controls		= {
 							jump 	 	: obj.controls.jump || 32,
 							moveLeft 	: obj.controls.moveLeft || 37,
@@ -20,11 +28,11 @@ Controls.prototype.init = function(){
 		switch( control.keyCode ){
 
 			case that.controls.jump :
-				if( !that.character.hasClass( 'jump' ) && !that.character.hasClass( 'fall' ) ) that.movement.jump();
+				if( !that.character.hasClass( 'jump' ) && !that.character.hasClass( 'fall' )  ) that.movement.jump();
 				break;
 
 			case that.controls.moveLeft :
-				if( !that.movement.state.moveLeft ) {
+				if( !that.movement.state.moveLeft && !that.disabled.moveLeft ) {
 					that.character 
 						.removeClass( 'right down up' )
 						.addClass( 'left moveLeft' );
@@ -34,7 +42,7 @@ Controls.prototype.init = function(){
 				break;
 
 			case that.controls.moveRight :
-				if( !that.movement.state.moveRight ) {
+				if( !that.movement.state.moveRight && !that.disabled.moveRight ) {
 					that.character
 						.removeClass( 'left down up' )
 						.addClass( 'right moveRight' );
@@ -88,4 +96,22 @@ Controls.prototype.init = function(){
 		
 	});
 
+}
+
+Controls.prototype.disable = function( control ){
+	this.disabled.check				= true;
+	this.disabled[ control ] 		= true;
+	this.movement.state[ control ] 	= false;
+	this.character.removeClass( control );
+}
+
+Controls.prototype.enable = function(){
+	this.disabled	= {
+						check		: false,
+						jump 	 	: false,
+						moveLeft 	: false,
+						moveRight 	: false,
+						crouch 		: false,
+						climb 		: false
+					}
 }
